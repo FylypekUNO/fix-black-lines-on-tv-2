@@ -82,5 +82,18 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="ILMerge" Version="3.0.41" />
+  </ItemGroup>
+  <PropertyGroup>
+    <PublishSingleFile>true</PublishSingleFile>
+    <SelfContained>true</SelfContained>
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+    <PublishReadyToRun>true</PublishReadyToRun>
+    <IncludeAllContentForSelfExtract>true</IncludeAllContentForSelfExtract>
+  </PropertyGroup>
+  <Target Name="ILMerge" AfterTargets="Build" Condition="'$(Configuration)' == 'Release'">
+    <Exec Command="$(ILMergeConsolePath) /ndebug /target:winexe /out:$(OutputPath)$(AssemblyName).exe $(OutputPath)*.dll $(OutputPath)$(AssemblyName).exe" />
+  </Target>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
