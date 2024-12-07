@@ -17,7 +17,7 @@ namespace fix_black_lines_on_TV
         private ContextMenuStrip _trayMenu;
         private int _targetScreenIndex = 0;
         private int _patternHeight = 4;
-        private int _lineSize = 1;
+        private int _lineSize = 1;   
         private int _patternOffset = 0;
 
         protected override CreateParams CreateParams
