@@ -7,12 +7,6 @@ namespace fix_black_lines_on_TV
 {
     public partial class OverlayForm : Form
     {
-        [DllImport("user32.dll", SetLastError = true)]
-        private static extern int GetWindowLong(IntPtr hWnd, int nIndex);
-
-        [DllImport("user32.dll", SetLastError = true)]
-        private static extern int SetWindowLong(IntPtr hWnd, int nIndex, int dwNewLong);
-
         private const int GWL_EXSTYLE = -20; // Extended window styles
         private const int WS_EX_LAYERED = 0x80000; // Allows transparency
         private const int WS_EX_TOOLWINDOW = 0x80; // Hides from Alt+Tab
