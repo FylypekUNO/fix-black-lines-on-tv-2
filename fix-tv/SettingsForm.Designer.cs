@@ -26,6 +26,8 @@ namespace fix_black_lines_on_TV
             this.btnAccept = new System.Windows.Forms.Button();
             this.btnApply = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
+            this.lblScreenIndex = new System.Windows.Forms.Label();
+            this.cboScreenIndex = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.numPatternHeight)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numLineSize)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numPatternOffset)).BeginInit();
@@ -108,7 +110,7 @@ namespace fix_black_lines_on_TV
             // btnAccept
             // 
             this.btnAccept.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.btnAccept.Location = new System.Drawing.Point(10, 180);
+            this.btnAccept.Location = new System.Drawing.Point(10, 220);
             this.btnAccept.Name = "btnAccept";
             this.btnAccept.Size = new System.Drawing.Size(80, 23);
             this.btnAccept.TabIndex = 8;
@@ -118,7 +120,7 @@ namespace fix_black_lines_on_TV
             // 
             // btnApply
             // 
-            this.btnApply.Location = new System.Drawing.Point(100, 180);
+            this.btnApply.Location = new System.Drawing.Point(100, 220);
             this.btnApply.Name = "btnApply";
             this.btnApply.Size = new System.Drawing.Size(80, 23);
             this.btnApply.TabIndex = 9;
@@ -129,18 +131,38 @@ namespace fix_black_lines_on_TV
             // btnCancel
             // 
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(190, 180);
+            this.btnCancel.Location = new System.Drawing.Point(190, 220);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(80, 23);
             this.btnCancel.TabIndex = 10;
             this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
             // 
+            // lblScreenIndex
+            // 
+            this.lblScreenIndex.AutoSize = true;
+            this.lblScreenIndex.Location = new System.Drawing.Point(10, 180);
+            this.lblScreenIndex.Name = "lblScreenIndex";
+            this.lblScreenIndex.Size = new System.Drawing.Size(47, 13);
+            this.lblScreenIndex.TabIndex = 11;
+            this.lblScreenIndex.Text = "Screen:";
+            // 
+            // cboScreenIndex
+            // 
+            this.cboScreenIndex.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cboScreenIndex.FormattingEnabled = true;
+            this.cboScreenIndex.Location = new System.Drawing.Point(120, 180);
+            this.cboScreenIndex.Name = "cboScreenIndex";
+            this.cboScreenIndex.Size = new System.Drawing.Size(100, 21);
+            this.cboScreenIndex.TabIndex = 12;
+            // 
             // SettingsForm
             // 
             this.AcceptButton = this.btnAccept;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(284, 211);
+            this.ClientSize = new System.Drawing.Size(284, 251);
+            this.Controls.Add(this.cboScreenIndex);
+            this.Controls.Add(this.lblScreenIndex);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnApply);
             this.Controls.Add(this.btnAccept);
@@ -177,5 +199,7 @@ namespace fix_black_lines_on_TV
         private System.Windows.Forms.Button btnAccept;
         private System.Windows.Forms.Button btnApply;
         private System.Windows.Forms.Button btnCancel;
+        private System.Windows.Forms.Label lblScreenIndex;
+        private System.Windows.Forms.ComboBox cboScreenIndex;
     }
 }

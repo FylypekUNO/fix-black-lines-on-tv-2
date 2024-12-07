@@ -15,10 +15,11 @@ namespace fix_black_lines_on_TV
 
         private NotifyIcon _trayIcon;
         private ContextMenuStrip _trayMenu;
-        private int _targetScreenIndex = 0;
+
         private int _patternHeight = 4;
         private int _lineSize = 1;   
         private int _patternOffset = 0;
+        private int _targetScreenIndex = 0;
 
         protected override CreateParams CreateParams
         {
@@ -164,7 +165,7 @@ namespace fix_black_lines_on_TV
 
         private void OpenSettings()
         {
-            using (var settingsForm = new SettingsForm(_patternHeight, _lineSize, _patternOffset, this.Opacity))
+            using (var settingsForm = new SettingsForm(_patternHeight, _lineSize, _patternOffset, this.Opacity, _targetScreenIndex))
             {
                 settingsForm.SettingsApplied += (sender, e) =>
                 {
@@ -173,6 +174,7 @@ namespace fix_black_lines_on_TV
                     _patternHeight = settingsForm.PatternHeight;
                     _lineSize = settingsForm.LineSize;
                     _patternOffset = settingsForm.PatternOffset;
+                    _targetScreenIndex = settingsForm.TargetScreenIndex;
                     this.Invalidate();
                 };
 
@@ -183,6 +185,7 @@ namespace fix_black_lines_on_TV
                     _patternHeight = settingsForm.PatternHeight;
                     _lineSize = settingsForm.LineSize;
                     _patternOffset = settingsForm.PatternOffset;
+                    _targetScreenIndex = settingsForm.TargetScreenIndex;
                     this.Invalidate();
                 }
             }
