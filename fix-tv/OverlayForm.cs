@@ -18,14 +18,23 @@ namespace fix_black_lines_on_TV
         private const int WS_EX_TOOLWINDOW = 0x80; // Hides from Alt+Tab
         private const int WS_EX_NOACTIVATE = 0x8000000; // Prevents activation on click
         private const int WS_EX_TRANSPARENT = 0x20; // Makes the window transparent to mouse events
-        private const int HTTRANSPARENT = -1; // Transparent hit test value
 
         private NotifyIcon _trayIcon;
         private ContextMenuStrip _trayMenu;
         private int _targetScreenIndex = 0;
         private int _patternHeight = 4;
         private int _lineSize = 1;
-        private int _patternOffset = 0;
+        private int _patternOffset = 1;
+
+        protected override CreateParams CreateParams
+        {
+            get
+            {
+                CreateParams cp = base.CreateParams;
+                cp.ExStyle |= WS_EX_LAYERED | WS_EX_TOOLWINDOW | WS_EX_NOACTIVATE | WS_EX_TRANSPARENT;
+                return cp;
+            }
+        }
 
         public OverlayForm()
         {
@@ -89,10 +98,6 @@ namespace fix_black_lines_on_TV
             this.BackColor = Color.White; // Set a background color (used for transparency)
             this.TransparencyKey = Color.White; // Make this color transparent
             this.AllowTransparency = true; // Enable transparency
-
-            // Set the window styles to hide it and allow interaction
-            var exStyle = GetWindowLong(this.Handle, GWL_EXSTYLE);
-            SetWindowLong(this.Handle, GWL_EXSTYLE, exStyle | WS_EX_LAYERED | WS_EX_TOOLWINDOW | WS_EX_NOACTIVATE | WS_EX_TRANSPARENT);
         }
 
         protected override void WndProc(ref Message m)
@@ -101,11 +106,9 @@ namespace fix_black_lines_on_TV
             const int WM_NCHITTEST = 0x0084;
 
             if (m.Msg == WM_DISPLAYCHANGE) OnDisplaySizeChange();
-            if (m.Msg == WM_NCHITTEST)
-            {
-                m.Result = (IntPtr)HTTRANSPARENT;
-                return;
-            }
+            if (m.Msg == WM_NCHITTEST) return;
+            
+
             base.WndProc(ref m);
         }
 
@@ -113,12 +116,32 @@ namespace fix_black_lines_on_TV
         {
             var targetScreen = Screen.AllScreens[_targetScreenIndex];
             var screenBounds = targetScreen.Bounds;
-
+            
             // Fullscreen
-            this.Location = new Point(screenBounds.Left, screenBounds.Top);
+            this.Location = new Point(screenBounds.X, screenBounds.Y);
             this.Size = new Size(screenBounds.Width, screenBounds.Height);
 
             this.Invalidate();
+        }
+
+        protected override void OnPaint(PaintEventArgs e)
+        {
+            e.Graphics.PageUnit = GraphicsUnit.Pixel;
+            e.Graphics.PageScale = 1.0f;
+            e.Graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
+            e.Graphics.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.Half;
+
+            base.OnPaint(e);
+
+            TextureBrush brush = CreatePatternBrush();
+            try
+            {
+                e.Graphics.FillRectangle(brush, this.ClientRectangle);
+            }
+            finally
+            {
+                brush.Dispose();
+            }
         }
 
         private TextureBrush CreatePatternBrush()
@@ -131,7 +154,7 @@ namespace fix_black_lines_on_TV
                 Pen p = new Pen(Color.Black, _lineSize);
                 try
                 {
-                    g.DrawLine(p, _patternOffset, _patternHeight / 2, _patternHeight - _patternOffset, _patternHeight / 2);
+                    g.DrawLine(p, 0, _patternOffset, _patternHeight - 1, _patternOffset);
                 }
                 finally
                 {
@@ -143,21 +166,6 @@ namespace fix_black_lines_on_TV
                 g.Dispose();
             }
             return new TextureBrush(pattern);
-        }
-
-        protected override void OnPaint(PaintEventArgs e)
-        {
-            base.OnPaint(e);
-
-            TextureBrush brush = CreatePatternBrush();
-            try
-            {
-                e.Graphics.FillRectangle(brush, this.ClientRectangle);
-            }
-            finally
-            {
-                brush.Dispose();
-            }
         }
 
         private void OpenSettings()
