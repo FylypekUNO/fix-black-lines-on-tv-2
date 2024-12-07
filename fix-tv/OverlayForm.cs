@@ -18,7 +18,7 @@ namespace fix_black_lines_on_TV
 
         private int _patternHeight = 4;
         private int _lineSize = 1;   
-        private int _patternOffset = 0;
+        private int _patternOffset = 1;
         private int _targetScreenIndex = 0;
 
         protected override CreateParams CreateParams
@@ -36,7 +36,7 @@ namespace fix_black_lines_on_TV
             SetVisuals();
             InitializeTrayIcon();
             UpdateTrayMenu();
-            OnDisplaySizeChange();
+            UpdateBounds();
         }
 
         private void InitializeTrayIcon()
@@ -100,20 +100,20 @@ namespace fix_black_lines_on_TV
             const int WM_DISPLAYCHANGE = 0x007E;
             const int WM_NCHITTEST = 0x0084;
 
-            if (m.Msg == WM_DISPLAYCHANGE) OnDisplaySizeChange();
+            if (m.Msg == WM_DISPLAYCHANGE) UpdateBounds();
             if (m.Msg == WM_NCHITTEST) return;
             
 
             base.WndProc(ref m);
         }
 
-        private void OnDisplaySizeChange()
+        private void UpdateBounds()
         {
             var targetScreen = Screen.AllScreens[_targetScreenIndex];
             var screenBounds = targetScreen.Bounds;
             
             // almost Fullscreen
-            this.Location = new Point(screenBounds.X, screenBounds.Y);
+            this.Location = new Point(screenBounds.Left, screenBounds.Top);
             this.Size = new Size(screenBounds.Width, screenBounds.Height - 1);
 
             this.Invalidate();
@@ -175,6 +175,8 @@ namespace fix_black_lines_on_TV
                     _lineSize = settingsForm.LineSize;
                     _patternOffset = settingsForm.PatternOffset;
                     _targetScreenIndex = settingsForm.TargetScreenIndex;
+
+                    UpdateBounds();
                     this.Invalidate();
                 };
 
@@ -186,6 +188,8 @@ namespace fix_black_lines_on_TV
                     _lineSize = settingsForm.LineSize;
                     _patternOffset = settingsForm.PatternOffset;
                     _targetScreenIndex = settingsForm.TargetScreenIndex;
+
+                    UpdateBounds();
                     this.Invalidate();
                 }
             }
