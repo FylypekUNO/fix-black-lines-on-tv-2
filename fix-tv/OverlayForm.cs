@@ -18,7 +18,7 @@ namespace fix_black_lines_on_TV
         private int _targetScreenIndex = 0;
         private int _patternHeight = 4;
         private int _lineSize = 1;
-        private int _patternOffset = 1;
+        private int _patternOffset = 0;
 
         protected override CreateParams CreateParams
         {
@@ -111,9 +111,9 @@ namespace fix_black_lines_on_TV
             var targetScreen = Screen.AllScreens[_targetScreenIndex];
             var screenBounds = targetScreen.Bounds;
             
-            // Fullscreen
+            // almost Fullscreen
             this.Location = new Point(screenBounds.X, screenBounds.Y);
-            this.Size = new Size(screenBounds.Width, screenBounds.Height);
+            this.Size = new Size(screenBounds.Width, screenBounds.Height - 1);
 
             this.Invalidate();
         }
